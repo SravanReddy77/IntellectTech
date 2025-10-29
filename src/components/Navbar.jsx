@@ -21,7 +21,7 @@ export default function Navbar() {
     { name: "About", href: "/about" },
     { name: "IT Services", href: "/it-services" },
     { name: "Who We Serve", href: "/who-we-serve" },
-    { name: "For Talent", href: "/talent" },
+    { name: "For Talent", href: "/for-talent" },
     { name: "Careers", href: "/careers" },
     { name: "Contact Us", href: "/contact" },
   ];
