@@ -1,114 +1,95 @@
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { FaBars, FaTimes } from "react-icons/fa";
+import { Link, useLocation } from "react-router-dom";
+import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+  const location = useLocation();
+  const [isHome, setIsHome] = useState(true);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const toggleMenu = () => setMenuOpen(!menuOpen);
-
-  const links = [
-    { name: "Home", href: "/" },
-    { name: "About", href: "/about" },
-    { name: "IT Services", href: "/it-services" },
-    { name: "Who We Serve", href: "/who-we-serve" },
-    { name: "For Talent", href: "/for-talent" },
-    { name: "Careers", href: "/careers" },
-    { name: "Contact Us", href: "/contact" },
-  ];
+    setIsHome(location.pathname === "/");
+  }, [location]);
 
   return (
-    <motion.nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
-        scrolled
-          ? "bg-gradient-to-r from-blue-900 via-blue-700 to-blue-500 shadow-lg"
-          : "bg-transparent"
+    <nav
+      className={`fixed w-full top-0 z-50 transition-all duration-300 ${
+        isHome ? "bg-transparent text-white" : "bg-white text-gray-900 shadow-md"
       }`}
-      initial={{ y: -80 }}
-      animate={{ y: 0 }}
     >
-      <div className="flex items-center justify-between px-6 md:px-12 py-4">
-        {/* Company Name */}
-        <a
-          href="/"
-          className={`text-2xl font-bold tracking-wide transition-colors duration-300 ${
-            scrolled ? "text-white" : "text-white"
+      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        {/* Company Name / Logo */}
+        <Link
+          to="/"
+          className={`text-2xl font-bold tracking-wide ${
+            isHome ? "text-white" : "text-gray-900"
           }`}
         >
-          IntellectTech
-        </a>
+          IntellectTech Solutions
+        </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex space-x-8">
-          {links.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className={`text-sm font-semibold tracking-wide transition-colors duration-300 ${
-                scrolled
-                  ? "text-white hover:text-gray-200"
-                  : "text-white hover:text-blue-300"
-              }`}
-            >
-              {link.name}
-            </a>
-          ))}
+        <div className="hidden md:flex space-x-8 font-medium">
+          <Link to="/about" className="hover:text-blue-500">
+            About Us
+          </Link>
+          <Link to="/it-services" className="hover:text-blue-500">
+            IT Services
+          </Link>
+          <Link to="/for-talent" className="hover:text-blue-500">
+            For Talent
+          </Link>
+          <Link to="/who-we-serve" className="hover:text-blue-500">
+            Who We Serve
+          </Link>
+          <Link to="/careers" className="hover:text-blue-500">
+            Careers
+          </Link>
+          <Link to="/contact" className="hover:text-blue-500">
+            Contact Us
+          </Link>
         </div>
 
-        {/* Mobile Menu Button */}
-        <div className="md:hidden">
-          <button onClick={toggleMenu}>
-            {menuOpen ? (
-              <FaTimes
-                size={22}
-                className={`${scrolled ? "text-white" : "text-white"}`}
-              />
-            ) : (
-              <FaBars
-                size={22}
-                className={`${scrolled ? "text-white" : "text-white"}`}
-              />
-            )}
-          </button>
-        </div>
+        {/* Mobile Menu Toggle */}
+        <button
+          onClick={() => setOpen(!open)}
+          className="md:hidden focus:outline-none"
+        >
+          {open ? (
+            <X size={28} className={isHome ? "text-white" : "text-gray-900"} />
+          ) : (
+            <Menu size={28} className={isHome ? "text-white" : "text-gray-900"} />
+          )}
+        </button>
       </div>
 
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className={`md:hidden flex flex-col items-center space-y-4 py-6 transition-all duration-300 ${
-            scrolled
-              ? "bg-gradient-to-r from-blue-900 via-blue-700 to-blue-500"
-              : "bg-black bg-opacity-80"
+      {/* Mobile Menu Dropdown */}
+      {open && (
+        <div
+          className={`md:hidden flex flex-col items-center space-y-4 pb-6 ${
+            isHome ? "bg-black/70 text-white" : "bg-white text-gray-900 shadow-md"
           }`}
         >
-          {links.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              onClick={() => setMenuOpen(false)}
-              className={`text-lg font-medium ${
-                scrolled
-                  ? "text-white hover:text-gray-200"
-                  : "text-white hover:text-blue-300"
-              }`}
-            >
-              {link.name}
-            </a>
-          ))}
-        </motion.div>
+          <Link to="/about" onClick={() => setOpen(false)}>
+            About Us
+          </Link>
+          <Link to="/it-services" onClick={() => setOpen(false)}>
+            IT Services
+          </Link>
+          <Link to="/for-talent" onClick={() => setOpen(false)}>
+            For Talent
+          </Link>
+          <Link to="/who-we-serve" onClick={() => setOpen(false)}>
+            Who We Serve
+          </Link>
+          <Link to="/careers" onClick={() => setOpen(false)}>
+            Careers
+          </Link>
+          <Link to="/contact" onClick={() => setOpen(false)}>
+            Contact Us
+          </Link>
+        </div>
       )}
-    </motion.nav>
+    </nav>
   );
 }
