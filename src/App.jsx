@@ -1,35 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./components/NavBar";
+import HeroSection from "./components/HeroSection";
+import AboutPreview from "./components/AboutPreview";
+import About from "./pages/About";
+import ITServices from "./pages/ITServices.jsx";
+import ForTalent from "./pages/ForTalent";
+import WhoWeServe from "./pages/WhoWeServe";
+import Careers from "./pages/Careers";
+import ContactUs from "./pages/ContactUs";
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+function Home(){
+    return (
+    <div className = "App">
+      <Navbar />
+      <HeroSection />
+      <AboutPreview />
+    </div>
+  );
 }
 
-export default App
+function App() {
+  return (
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/it-services" element={<ITServices />} />
+        <Route path="/for-talent" element={<ForTalent />} />
+        <Route path="/who-we-serve" element={<WhoWeServe />} />
+        <Route path="/careers" element={<Careers />} />
+        <Route path="/contact" element={<ContactUs />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
